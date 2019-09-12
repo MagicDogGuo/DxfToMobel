@@ -16,7 +16,7 @@ public class GenerateMesh : MonoBehaviour
 
     Vector3[] vertices = new Vector3[4];
     Color[] colors = { color, color, color, color };
-    Vector2[] uvs = { new Vector2(0, 1), new Vector2(0, 0), new Vector2(1, 1), new Vector2(1, 0) };
+    Vector2[] uvs = new Vector2[4];
     int[] tris = { 2 , 1, 0, 1, 2, 3 };
 
     GoLine goLines;
@@ -26,6 +26,14 @@ public class GenerateMesh : MonoBehaviour
         goLines = GetComponent<GoLine>();
         //lineRenderer = GetComponent<LineRenderer>();
         //lineRenderer.enabled = false;
+        float heightWeight = Vector3.Distance(goLines.PositionStart, goLines.PositionEnd) / wallHeight  ;
+        //Debug.Log("==============="+heightWeight);
+        uvs[0] = new Vector2(0, heightWeight);
+        uvs[1] = new Vector2(0, 0);
+        uvs[2] = new Vector2(1, heightWeight);
+        uvs[3] = new Vector2(1, 0);
+
+
     }
 
     private void Update()
