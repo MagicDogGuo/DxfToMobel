@@ -65,7 +65,7 @@ public class GoLine : MonoBehaviour, IResizeObject
         PositionStart = p1;
         PositionEnd = p2;
 
-        Debug.Log(p1+"   "+p2);
+       // Debug.Log(p1+"   "+p2);
 
         lr.SetPosition(0, p1);
         lr.SetPosition(1, p2);
