@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class ChangeToTwoSideShader : MonoBehaviour {
 
+    [SerializeField]
+    Material toMat;
 
-
-	void Start () {
-        Material mat = new Material(Shader.Find("Standard(twoSide)"));
+    public void ChangeShader()
+    {
+        Material mat = toMat;//new Material(Shader.Find("Standard(twoSide)"));
 
         MeshRenderer[] meshs = GameObject.FindObjectsOfType<MeshRenderer>() as MeshRenderer[];
         foreach (var item in meshs)
@@ -15,5 +17,4 @@ public class ChangeToTwoSideShader : MonoBehaviour {
             item.material = mat;
         }
     }
-
 }

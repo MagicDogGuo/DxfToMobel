@@ -21,16 +21,20 @@ public class GoLine : MonoBehaviour, IResizeObject
 
     GenerateMesh generateMesh;
 
+    GoLine[] golineLines;
+
     // Use this for initialization
     void Awake()
     {
         GoView.Content.ResizeObjects.Add(this);
+        golineLines = FindObjectsOfType<GoLine>();
+
     }
 
     void Start()
     {
         generateMesh = gameObject.AddComponent<GenerateMesh>();
-
+        this.name = "Go" + golineLines.Length;
     }
     // //Update is called once per frame
     //void Update()

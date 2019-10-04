@@ -50,6 +50,22 @@ public class GenerateMesh : MonoBehaviour
             LineStartPosition = goLines.PositionStart;
             LineEndPosition = goLines.PositionEnd;
 
+            
+            //座標 X 或 Y 一定要從少變多(為了讓UV方向一致)
+            if(LineStartPosition.x> LineEndPosition.x)
+            {
+                float tempX = LineStartPosition.x;
+                LineStartPosition.x = LineEndPosition.x;
+                LineEndPosition.x = tempX;
+            }
+            if(LineStartPosition.y > LineEndPosition.y)
+            {
+                float tempY = LineStartPosition.y;
+                LineStartPosition.y = LineEndPosition.y;
+                LineEndPosition.y = tempY;
+            }
+
+
             Vector3 Vertex1Position = new Vector3(LineStartPosition.x, 0, LineStartPosition.y);
             Vector3 Vertex2Position = new Vector3(LineEndPosition.x, 0, LineEndPosition.y);
             Vector3 Vertex3Position = new Vector3(LineStartPosition.x, wallHeight, LineStartPosition.y);
@@ -67,7 +83,7 @@ public class GenerateMesh : MonoBehaviour
             vertices[2] = Vertex3Position;
             vertices[3] = Vertex4Position;
 
-            Material mat = new Material(Shader.Find("Standard(twoSide)"));
+            Material mat = new Material(Shader.Find("Standard(twoSide)"));//
 
             Mesh mesh = new Mesh();
             mesh.vertices = vertices;
