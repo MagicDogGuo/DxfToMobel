@@ -1,23 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Loader;
+using System.Collections.Generic;
+using System.IO;
 
 public class Manager : MonoBehaviour
 {
     public GoView GoView;
+    GenerateMesh[] generateMeshes;
 
-    // Use this for initialization
-    void Start()
-    {
-        // this.GetComponent<Loader.ILoader>().Loaded = Loaded;
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     private void LoadDXF(string path)
     {
@@ -65,6 +56,70 @@ public class Manager : MonoBehaviour
         if (GUI.Button(new Rect(250, 100, 75, 20), "测试文件4"))
         {
             LoadDXF(Application.dataPath + "/TestData/Test4.dxf");
+        }
+    }
+
+    /// <summary>
+    /// 載入DXF
+    /// </summary>
+    public void Generate2DLine()
+    {   
+     
+        LoadDXF(Application.dataPath + "/TestData/Test1.dxf");
+        
+    }
+
+    /// <summary>
+    /// 找到所有的GenerateMesh 
+    /// </summary>
+    public void FindAllGenerateMesh()
+    {
+        if (FindObjectsOfType<GenerateMesh>().Length != 0)
+        {
+            generateMeshes = FindObjectsOfType<GenerateMesh>();
+        }
+        else
+        {
+            Debug.LogWarning("========沒有載入2D DXF!==========");
+        }
+    }
+
+
+    /// <summary>
+    /// 產生3D模型
+    /// </summary>
+    public void Generate3DMesh()
+    {
+        if (generateMeshes != null)
+        {
+            foreach (var item in generateMeshes)
+            {
+                item.Generate3DMesh();
+            }
+        }
+        else
+        {
+            Debug.LogWarning("==========沒有產生3D模型!==========");
+
+        }
+
+    }
+
+    /// <summary>
+    /// 轉換成Obj
+    /// </summary>
+    public void OutputToObj()
+    {
+        if (generateMeshes != null)
+        {
+            foreach (var item in generateMeshes)
+            {
+                item.OutputToObj();
+            }
+        }
+        else
+        {
+            Debug.LogWarning("==========沒有產生3D模型!==========");
         }
     }
 }

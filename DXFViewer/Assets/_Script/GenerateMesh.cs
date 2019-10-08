@@ -44,73 +44,90 @@ public class GenerateMesh : MonoBehaviour
     {
 
         if (Input.GetKeyDown(KeyCode.G)){
-
-            Debug.Log(goLines.PositionStart + "==" + goLines.PositionEnd);
-
-            LineStartPosition = goLines.PositionStart;
-            LineEndPosition = goLines.PositionEnd;
-
-            
-            //座標 X 或 Y 一定要從少變多(為了讓UV方向一致)
-            if(LineStartPosition.x> LineEndPosition.x)
-            {
-                float tempX = LineStartPosition.x;
-                LineStartPosition.x = LineEndPosition.x;
-                LineEndPosition.x = tempX;
-            }
-            if(LineStartPosition.y > LineEndPosition.y)
-            {
-                float tempY = LineStartPosition.y;
-                LineStartPosition.y = LineEndPosition.y;
-                LineEndPosition.y = tempY;
-            }
-
-
-            Vector3 Vertex1Position = new Vector3(LineStartPosition.x, 0, LineStartPosition.y);
-            Vector3 Vertex2Position = new Vector3(LineEndPosition.x, 0, LineEndPosition.y);
-            Vector3 Vertex3Position = new Vector3(LineStartPosition.x, wallHeight, LineStartPosition.y);
-            Vector3 Vertex4Position = new Vector3(LineEndPosition.x, wallHeight, LineEndPosition.y);
-
-
-            GameObject gameObject = new GameObject("Quad");
-            gameObject.transform.SetParent(transform, false);
-            var mf = gameObject.AddComponent<MeshFilter>();
-            var mr = gameObject.AddComponent<MeshRenderer>();
-
-
-            vertices[0] = Vertex1Position;
-            vertices[1] = Vertex2Position;
-            vertices[2] = Vertex3Position;
-            vertices[3] = Vertex4Position;
-
-            Material mat = new Material(Shader.Find("Standard(twoSide)"));//
-
-            Mesh mesh = new Mesh();
-            mesh.vertices = vertices;
-            mesh.colors = colors;
-            mesh.uv = uvs;
-            mesh.triangles = tris;
-            mf.mesh = mesh;
-
-            mat.color = Color.white;
-
-            mr.material = mat;
-
+            Generate3DMesh();
         }
 
         if (Input.GetKey(KeyCode.F))
         {
-            Debug.Log(MeshToString(this.GetComponentInChildren<MeshFilter>(), Vector3.one));
-
-            using (StreamWriter streamWriter = new StreamWriter(string.Format("{0}{1}.obj", Application.dataPath+ "/_Obj/", this.gameObject.name)))
-            {
-                streamWriter.Write(MeshToString(this.GetComponentInChildren<MeshFilter>(), new Vector3(-1f, 1f, 1f)));
-                streamWriter.Close();
-            }
-            AssetDatabase.Refresh();
+            OutputToObj();
         }
 
     }
+
+
+    /// <summary>
+    /// 產生3D模型
+    /// </summary>
+    public void Generate3DMesh()
+    {
+        Debug.Log(goLines.PositionStart + "==" + goLines.PositionEnd);
+
+        LineStartPosition = goLines.PositionStart;
+        LineEndPosition = goLines.PositionEnd;
+
+
+        //座標 X 或 Y 一定要從少變多(為了讓UV方向一致)
+        if (LineStartPosition.x > LineEndPosition.x)
+        {
+            float tempX = LineStartPosition.x;
+            LineStartPosition.x = LineEndPosition.x;
+            LineEndPosition.x = tempX;
+        }
+        if (LineStartPosition.y > LineEndPosition.y)
+        {
+            float tempY = LineStartPosition.y;
+            LineStartPosition.y = LineEndPosition.y;
+            LineEndPosition.y = tempY;
+        }
+
+
+        Vector3 Vertex1Position = new Vector3(LineStartPosition.x, 0, LineStartPosition.y);
+        Vector3 Vertex2Position = new Vector3(LineEndPosition.x, 0, LineEndPosition.y);
+        Vector3 Vertex3Position = new Vector3(LineStartPosition.x, wallHeight, LineStartPosition.y);
+        Vector3 Vertex4Position = new Vector3(LineEndPosition.x, wallHeight, LineEndPosition.y);
+
+
+        GameObject gameObject = new GameObject("Quad");
+        gameObject.transform.SetParent(transform, false);
+        var mf = gameObject.AddComponent<MeshFilter>();
+        var mr = gameObject.AddComponent<MeshRenderer>();
+
+
+        vertices[0] = Vertex1Position;
+        vertices[1] = Vertex2Position;
+        vertices[2] = Vertex3Position;
+        vertices[3] = Vertex4Position;
+
+        Material mat = new Material(Shader.Find("Standard(twoSide)"));//
+
+        Mesh mesh = new Mesh();
+        mesh.vertices = vertices;
+        mesh.colors = colors;
+        mesh.uv = uvs;
+        mesh.triangles = tris;
+        mf.mesh = mesh;
+
+        mat.color = Color.white;
+
+        mr.material = mat;
+
+    }
+
+    /// <summary>
+    /// 轉換成Obj
+    /// </summary>
+    public void OutputToObj()
+    {
+        Debug.Log(MeshToString(this.GetComponentInChildren<MeshFilter>(), Vector3.one));
+
+        using (StreamWriter streamWriter = new StreamWriter(string.Format("{0}{1}.obj", Application.dataPath + "/Resources/_Obj/", this.gameObject.name)))
+        {
+            streamWriter.Write(MeshToString(this.GetComponentInChildren<MeshFilter>(), new Vector3(-1f, 1f, 1f)));
+            streamWriter.Close();
+        }
+        AssetDatabase.Refresh();
+    }
+
 
 
     /// <summary>
