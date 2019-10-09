@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,17 +10,27 @@ public class ChangeToTwoSideShader : MonoBehaviour {
     Material toMat;
 
     [SerializeField]
-    Transform ObjParent;
+    string parentGoName;
+
+    GameObject parentGo;
 
     /// <summary>
     /// 載入obj
     /// </summary>
     public void LoadObjInScene()
     {
-        Object[] obj = Resources.LoadAll("_Obj");
-        foreach (var item in obj)
+        parentGo = new GameObject();
+        parentGo.name = parentGoName;
+
+        string[] sdFiles = Directory.GetFiles(Application.dataPath + "/_Obj/", "*.obj", SearchOption.AllDirectories);
+
+        foreach (var item in sdFiles)
         {
-            Instantiate(item, ObjParent);
+            string assetPath = "Assets" + item.Replace(Application.dataPath, ""); //.Replace('\\', '/');
+
+            GameObject go = (GameObject)AssetDatabase.LoadAssetAtPath(assetPath, typeof(GameObject));
+
+            Instantiate(go, parentGo.transform);
         }
     }
 
@@ -42,10 +53,9 @@ public class ChangeToTwoSideShader : MonoBehaviour {
     /// </summary>
     public void OutputToPerfab()
     {
-        
-        string path = string.Format("{0}{1}.prefab", "Assets/_Prefab/", ObjParent.name);
+        string path = string.Format("{0}{1}.prefab", "Assets/_Prefab/", parentGoName);
         Debug.Log(path);
-        PrefabUtility.CreatePrefab(path, ObjParent.gameObject);
+        PrefabUtility.CreatePrefab(path, GameObject.Find(parentGoName));
         AssetDatabase.Refresh();
     }
 }

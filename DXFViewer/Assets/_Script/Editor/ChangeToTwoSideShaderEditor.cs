@@ -27,7 +27,7 @@ public class ChangeToTwoSideShaderEditor : Editor {
         GUILayout.Space(20f);
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("toMat"),new GUIContent("要更換的材質"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("ObjParent"), new GUIContent("Obj母物件"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("parentGoName"), new GUIContent("Obj母物件的名字(prefab名)"));
 
         GUILayout.Space(30);
 

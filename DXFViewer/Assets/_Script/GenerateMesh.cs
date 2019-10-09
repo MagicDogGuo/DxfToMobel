@@ -120,7 +120,7 @@ public class GenerateMesh : MonoBehaviour
     {
         Debug.Log(MeshToString(this.GetComponentInChildren<MeshFilter>(), Vector3.one));
 
-        using (StreamWriter streamWriter = new StreamWriter(string.Format("{0}{1}.obj", Application.dataPath + "/Resources/_Obj/", this.gameObject.name)))
+        using (StreamWriter streamWriter = new StreamWriter(string.Format("{0}{1}.obj", Application.dataPath + "/_Obj/", this.gameObject.name)))
         {
             streamWriter.Write(MeshToString(this.GetComponentInChildren<MeshFilter>(), new Vector3(-1f, 1f, 1f)));
             streamWriter.Close();
